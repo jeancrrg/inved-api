@@ -15,6 +15,12 @@
     <module name="TreeWalker">
         <property name="severity" value="error"/>
 
+        <!-- Valida se possui espaço após vírgula e palavras chaves do java -->
+        <module name="WhitespaceAfter">
+            <property name="tokens" value="COMMA, SEMI, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE" />
+            <property name="severity" value="error" />
+        </module>
+
         <!-- Garante que não haja imports não utilizados -->
         <module name="UnusedImports"/>
 
