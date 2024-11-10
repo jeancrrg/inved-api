@@ -19,7 +19,7 @@ public class ClienteServiceImpl implements ClienteService {
             if (codigoCliente == null) {
                 throw new BadRequestException("Código do cliente não encontrado para buscar o cliente!");
             }
-            Cliente clienteEncontrado = clienteRepository.findByCodigo(codigoCliente);
+            final Cliente clienteEncontrado = clienteRepository.findByCodigo(codigoCliente);
             if (clienteEncontrado == null) {
                 throw new BadRequestException("Cliente: " + codigoCliente + " não encontrado cadastro!");
             }
@@ -27,7 +27,8 @@ public class ClienteServiceImpl implements ClienteService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o cliente pelo código: " + codigoCliente + "! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar o cliente pelo código: "+ codigoCliente
+                                                    + "! - MENSAGEM DO ERRO: " + e.getMessage());
         }
     }
 

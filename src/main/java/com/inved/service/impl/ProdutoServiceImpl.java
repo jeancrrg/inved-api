@@ -28,16 +28,16 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     public List<ProdutoDTO> buscarAtivo(Long codigo, String nome) throws InternalServerErrorException {
         try {
-            List<ProdutoDTO> listaProdutosDTO = new ArrayList<>();
+            final List<ProdutoDTO> listaProdutosDTO = new ArrayList<>();
             if (nome != null && !nome.isEmpty()) {
-                String nomeFormatado = formatterUtil.removerAcentos(nome);
+                final String nomeFormatado = formatterUtil.removerAcentos(nome);
                 nome = "%" + nomeFormatado.toUpperCase().trim() + "%";
             }
-            List<Produto> listaProdutos = produtoRepository.buscarAtivo(codigo, nome);
+            final List<Produto> listaProdutos = produtoRepository.buscarAtivo(codigo, nome);
             if (listaProdutos != null && !listaProdutos.isEmpty()) {
                 for (Produto produto : listaProdutos) {
-                    List<String> listaUrlImagensProduto = imagemProdutoService.buscarUrlImagensProduto(produto.getCodigo());
-                    ProdutoDTO produtoDTO = new ProdutoDTO().toProdutoDTO(produto, listaUrlImagensProduto);
+                    final List<String> listaUrlImagensProduto = imagemProdutoService.buscarUrlImagensProduto(produto.getCodigo());
+                    final ProdutoDTO produtoDTO = new ProdutoDTO().toProdutoDTO(produto, listaUrlImagensProduto);
                     listaProdutosDTO.add(produtoDTO);
                 }
             }
@@ -52,7 +52,7 @@ public class ProdutoServiceImpl implements ProdutoService {
             if (codigoProduto == null) {
                 throw new BadRequestException("Código do produto não encontrado para buscar o produto!");
             }
-            Produto produtoEncontrado = produtoRepository.findByCodigo(codigoProduto);
+            final Produto produtoEncontrado = produtoRepository.findByCodigo(codigoProduto);
             if (produtoEncontrado == null) {
                 throw new BadRequestException("Produto: " + codigoProduto + " não encontrado cadastro!");
             }
@@ -60,7 +60,8 @@ public class ProdutoServiceImpl implements ProdutoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o produto pelo código: " + codigoProduto + "! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar o produto pelo código: " + codigoProduto
+                                                    + "! - MENSAGEM DO ERRO: " + e.getMessage());
         }
     }
 

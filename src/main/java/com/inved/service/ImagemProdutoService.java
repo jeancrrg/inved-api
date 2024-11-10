@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface ImagemProdutoService {
 
-    List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException, ArquivoAmazonException, InternalServerErrorException;
+    List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException,
+                                                                                    ArquivoAmazonException, InternalServerErrorException;
 
-    List<String> buscarUrlImagensProduto(Long codigoProduto) throws BadRequestException, ConverterException, ArquivoAmazonException, InternalServerErrorException;
+    List<String> buscarUrlImagensProduto(Long codigoProduto) throws BadRequestException, ConverterException,
+                                                                    ArquivoAmazonException, InternalServerErrorException;
 
 }

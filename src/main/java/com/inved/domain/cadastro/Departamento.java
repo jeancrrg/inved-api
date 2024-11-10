@@ -34,18 +34,6 @@ public class Departamento implements Serializable {
     @Column(name = "DATULTALT")
     private LocalDateTime dataUltimaAlteracao;
 
-    public Departamento() {
-
-    }
-
-    public Departamento(Long codigo, String nome, Boolean indicadorAtivo, LocalDateTime dataCadastro, LocalDateTime dataUltimaAlteracao) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.indicadorAtivo = indicadorAtivo;
-        this.dataCadastro = dataCadastro;
-        this.dataUltimaAlteracao = dataUltimaAlteracao;
-    }
-
     public Long getCodigo() {
         return codigo;
     }
@@ -90,8 +78,8 @@ public class Departamento implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Departamento that = (Departamento) o;
-        return Objects.equals(codigo, that.codigo);
+        final Departamento departamento = (Departamento) o;
+        return Objects.equals(codigo, departamento.codigo);
     }
 
     @Override

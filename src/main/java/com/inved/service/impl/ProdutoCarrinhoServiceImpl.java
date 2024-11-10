@@ -31,7 +31,7 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
             if (codigoCliente == null) {
                 throw new BadRequestException("Código do cliente não informado para buscar os produtos do carrinho!");
             }
-            return produtoCarrinhoRepository.findByCodigoCliente(codigoCliente);
+            return produtoCarrinhoRepository.buscarPeloCodigoCliente(codigoCliente);
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
@@ -39,15 +39,15 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         }
     }
 
-    public void adicionarProduto(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException, InternalServerErrorException {
+    public void adicionarProduto(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException,
+                                                                                                    InternalServerErrorException {
         try {
             validarAntesAdicionarProduto(codigoProduto, quantidade, codigoCliente);
-            Produto produtoEncontrado = produtoService.buscarPeloCodigo(codigoProduto);
-            Cliente clienteEncontrado = clienteService.buscarPeloCodigo(codigoCliente);
+            final Produto produtoEncontrado = produtoService.buscarPeloCodigo(codigoProduto);
+            final Cliente clienteEncontrado = clienteService.buscarPeloCodigo(codigoCliente);
 
-            ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho();
+            final ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho();
             produtoCarrinho.setCliente(clienteEncontrado);
-            produtoCarr
 
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());

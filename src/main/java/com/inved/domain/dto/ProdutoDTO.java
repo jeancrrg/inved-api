@@ -80,7 +80,7 @@ public class ProdutoDTO implements Serializable {
     }
 
     public ProdutoDTO toProdutoDTO(Produto produto, List<String> listaUrlImagensProduto) {
-        ProdutoDTO produtoDTO = new ProdutoDTO();
+        final ProdutoDTO produtoDTO = new ProdutoDTO();
         produtoDTO.setCodigo(produto.getCodigo());
         produtoDTO.setNome(produto.getNome());
         produtoDTO.setPreco(produto.getPreco());

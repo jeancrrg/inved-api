@@ -35,18 +35,6 @@ public class Marca implements Serializable {
     @Column(name = "DATULTALT")
     private LocalDateTime dataUltimaAlteracao;
 
-    public Marca() {
-
-    }
-
-    public Marca(Long codigo, String nome, Boolean indicadorAtivo, LocalDateTime dataCadastro, LocalDateTime dataUltimaAlteracao) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.indicadorAtivo = indicadorAtivo;
-        this.dataCadastro = dataCadastro;
-        this.dataUltimaAlteracao = dataUltimaAlteracao;
-    }
-
     public Long getCodigo() {
         return codigo;
     }
@@ -91,7 +79,7 @@ public class Marca implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Marca marca = (Marca) o;
+        final Marca marca = (Marca) o;
         return Objects.equals(codigo, marca.codigo);
     }
 

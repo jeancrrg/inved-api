@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * @author Jean Garcia
+ */
 @Entity
 @Table(name = "TPROCARRINHO")
 public class ProdutoCarrinho implements Serializable {
@@ -103,7 +106,7 @@ public class ProdutoCarrinho implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProdutoCarrinho carrinho = (ProdutoCarrinho) o;
+        final ProdutoCarrinho carrinho = (ProdutoCarrinho) o;
         return Objects.equals(numeroSequencial, carrinho.numeroSequencial);
     }
 

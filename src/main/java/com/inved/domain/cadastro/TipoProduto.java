@@ -26,15 +26,6 @@ public class TipoProduto implements Serializable {
     @Column(name = "DESTIPPRO")
     private String descricao;
 
-    public TipoProduto() {
-
-    }
-
-    public TipoProduto(Integer codigo, String descricao) {
-        this.codigo = codigo;
-        this.descricao = descricao;
-    }
-
     public Integer getCodigo() {
         return codigo;
     }
@@ -55,7 +46,7 @@ public class TipoProduto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TipoProduto that = (TipoProduto) o;
+        final TipoProduto that = (TipoProduto) o;
         return Objects.equals(codigo, that.codigo);
     }
 

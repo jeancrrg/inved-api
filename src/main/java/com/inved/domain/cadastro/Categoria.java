@@ -38,19 +38,6 @@ public class Categoria implements Serializable {
     @Column(name = "DATULTALT")
     private LocalDateTime dataUltimaAlteracao;
 
-    public Categoria() {
-
-    }
-
-    public Categoria(Long codigo, String nome, Boolean indicadorAtivo, Departamento departamento, LocalDateTime dataCadastro, LocalDateTime dataUltimaAlteracao) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.indicadorAtivo = indicadorAtivo;
-        this.departamento = departamento;
-        this.dataCadastro = dataCadastro;
-        this.dataUltimaAlteracao = dataUltimaAlteracao;
-    }
-
     public Long getCodigo() {
         return codigo;
     }
@@ -103,7 +90,7 @@ public class Categoria implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
+        final Categoria categoria = (Categoria) o;
         return Objects.equals(codigo, categoria.codigo);
     }
 

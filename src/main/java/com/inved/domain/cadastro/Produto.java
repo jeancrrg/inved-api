@@ -183,7 +183,7 @@ public class Produto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
+        final Produto produto = (Produto) o;
         return Objects.equals(codigo, produto.codigo);
     }
 

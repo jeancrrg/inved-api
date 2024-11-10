@@ -33,10 +33,11 @@ public class ImagemProdutoServiceImpl implements ImagemProdutoService {
 
     private final String DIRETORIO_IMAGEM = "imagens/produtos";
 
-    public List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException, ArquivoAmazonException, InternalServerErrorException {
+    public List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException, ArquivoAmazonException,
+                                                                                            InternalServerErrorException {
         try {
             if (nome != null && !nome.isEmpty()) {
-                String nomeFormatado = formatterUtil.removerAcentos(nome);
+                final String nomeFormatado = formatterUtil.removerAcentos(nome);
                 nome = "%" + nomeFormatado.toUpperCase().trim() + "%";
             }
             List<ImagemProduto> listaImagensProdutos = imagemProdutoRepository.buscar(codigo, nome, codigoProduto);
@@ -53,21 +54,24 @@ public class ImagemProdutoServiceImpl implements ImagemProdutoService {
         }
     }
 
-    public List<ImagemProduto> processarImagensProdutoAmazon(List<ImagemProduto> listaImagensProduto) throws ConverterException, ArquivoAmazonException {
-        List<ImagemProduto> listaImagensProdutoAmazon = new ArrayList<>();
+    public List<ImagemProduto> processarImagensProdutoAmazon(List<ImagemProduto> listaImagensProduto) throws ConverterException,
+                                                                                                                ArquivoAmazonException {
+        final List<ImagemProduto> listaImagensProdutoAmazon = new ArrayList<>();
         for (ImagemProduto imagemProduto : listaImagensProduto) {
-            imagemProduto.setUrlImagem(arquivoAmazonService.buscarUrlArquivoAmazon(DIRETORIO_IMAGEM + "/" + imagemProduto.getCodigoProduto() + "/" + imagemProduto.getNomeImagemServidor()));
+            imagemProduto.setUrlImagem(arquivoAmazonService.buscarUrlArquivoAmazon(DIRETORIO_IMAGEM + "/"
+                                        + imagemProduto.getCodigoProduto() + "/" + imagemProduto.getNomeImagemServidor()));
             listaImagensProdutoAmazon.add(imagemProduto);
         }
         return listaImagensProdutoAmazon;
     }
 
-    public List<String> buscarUrlImagensProduto(Long codigoProduto) throws BadRequestException, ConverterException, ArquivoAmazonException, InternalServerErrorException {
+    public List<String> buscarUrlImagensProduto(Long codigoProduto) throws BadRequestException, ConverterException,
+                                                                            ArquivoAmazonException, InternalServerErrorException {
         if (codigoProduto == null) {
             throw new BadRequestException("Código do produto não informado!");
         }
-        List<ImagemProduto> listaImagensProduto = buscar(null, null, codigoProduto);
-        List<String> listaUrlImagensProduto = new ArrayList<>();
+        final List<ImagemProduto> listaImagensProduto = buscar(null, null, codigoProduto);
+        final List<String> listaUrlImagensProduto = new ArrayList<>();
         for (ImagemProduto imagemProduto : listaImagensProduto) {
             listaUrlImagensProduto.add(imagemProduto.getUrlImagem());
         }

@@ -60,25 +60,6 @@ public class ImagemProduto implements Serializable {
     @Transient
     private String mensagemErroCadastro;
 
-    public ImagemProduto() {
-
-    }
-
-    public ImagemProduto(Long codigo, String nome, String nomeImagemServidor, Long tamanhoImagemBytes, Long codigoProduto, String tipoExtensaoImagem, LocalDateTime dataUltimaAlteracao, String arquivoBase64, String urlImagem, String tamanhoImagemConvertido, Status statusCadastro, String mensagemErroCadastro) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.nomeImagemServidor = nomeImagemServidor;
-        this.tamanhoImagemBytes = tamanhoImagemBytes;
-        this.codigoProduto = codigoProduto;
-        this.tipoExtensaoImagem = tipoExtensaoImagem;
-        this.dataUltimaAlteracao = dataUltimaAlteracao;
-        this.arquivoBase64 = arquivoBase64;
-        this.urlImagem = urlImagem;
-        this.tamanhoImagemConvertido = tamanhoImagemConvertido;
-        this.statusCadastro = statusCadastro;
-        this.mensagemErroCadastro = mensagemErroCadastro;
-    }
-
     public Long getCodigo() {
         return codigo;
     }
@@ -189,7 +170,7 @@ public class ImagemProduto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImagemProduto imagem = (ImagemProduto) o;
+        final ImagemProduto imagem = (ImagemProduto) o;
         return Objects.equals(codigo, imagem.codigo);
     }
 

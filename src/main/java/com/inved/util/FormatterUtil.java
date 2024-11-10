@@ -8,7 +8,7 @@ import java.text.Normalizer;
 public class FormatterUtil {
 
     public String removerAcentos(String texto) {
-        String textoFormatado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        final String textoFormatado = Normalizer.normalize(texto, Normalizer.Form.NFD);
         return textoFormatado.replaceAll("[^\\p{ASCII}]", "");
     }
 

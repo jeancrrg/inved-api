@@ -29,16 +29,18 @@ public class ArquivoAmazonServiceImpl implements ArquivoAmazonService {
                 throw new BadRequestException("Caminho do diretório do arquivo não encontrado para buscar!");
             }
             // Usado recurdo try-with-resources para garantir o autoclose automático do S3Presigner
-            try (S3Presigner presigner = S3Presigner.builder().region(Region.of(REGION_AMAZON)).credentialsProvider(ProfileCredentialsProvider.create()).build()) {
+            try (S3Presigner presigner = S3Presigner.builder().region(Region.of(REGION_AMAZON))
+                    .credentialsProvider(ProfileCredentialsProvider.create()).build()) {
 
                 // Requisição de obtenção do objeto
-                GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(BUCKET_AMAZON).key(caminhoDiretorio).build();
+                final GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(BUCKET_AMAZON).key(caminhoDiretorio).build();
 
                 // Criação da URL pré-assinada com expiração de 30 minutos
-                GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder().signatureDuration(Duration.ofMinutes(30)).getObjectRequest(getObjectRequest).build();
+                final GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                        .signatureDuration(Duration.ofMinutes(30)).getObjectRequest(getObjectRequest).build();
 
                 // Gera a URL pré-assinada
-                URL presignedUrl = presigner.presignGetObject(presignRequest).url();
+                final URL presignedUrl = presigner.presignGetObject(presignRequest).url();
 
                 // Retorna a URL
                 return presignedUrl.toExternalForm();
@@ -46,7 +48,8 @@ public class ArquivoAmazonServiceImpl implements ArquivoAmazonService {
         } catch (BadRequestException e) {
             throw new ArquivoAmazonException(e.getMessage());
         } catch (Exception e) {
-            throw new ArquivoAmazonException("Erro ao buscar arquivo no diretório: " + caminhoDiretorio + " da amazon! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new ArquivoAmazonException("Erro ao buscar arquivo no diretório: " + caminhoDiretorio
+                                                + " da amazon! - MENSAGEM DO ERRO: " + e.getMessage());
         }
     }
 
