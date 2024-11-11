@@ -1,11 +1,12 @@
 package com.inved.domain.pedido;
 
-import com.inved.domain.cadastro.Produto;
+import com.inved.domain.embeddabledid.ProdutoCarrinhoId;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -18,18 +19,8 @@ public class ProdutoCarrinho implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "NUMSEQ")
-    private Long numeroSequencial;
-
-    @ManyToOne
-    @JoinColumn(name = "CODCLI", referencedColumnName = "CODCLI")
-    private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "CODPRO", referencedColumnName = "CODPRO")
-    private Produto produto;
+    @EmbeddedId
+    private ProdutoCarrinhoId produtoCarrinhoId;
 
     @Column(name = "QNTPRO")
     private Integer quantidadeProduto;
@@ -37,34 +28,18 @@ public class ProdutoCarrinho implements Serializable {
     @Column(name = "VLRSUBTOT")
     private BigDecimal valorSubtotalProduto;
 
-    @Column(name = "VLRTOT")
-    private BigDecimal valorTotalProduto;
+    @Column(name = "DATULTALT")
+    private LocalDateTime dataUltimaAlteracao;
 
     @Transient
     private BigDecimal valorTotalCarrinho;
 
-    public Long getNumeroSequencial() {
-        return numeroSequencial;
+    public ProdutoCarrinhoId getProdutoCarrinhoId() {
+        return produtoCarrinhoId;
     }
 
-    public void setNumeroSequencial(Long numeroSequencial) {
-        this.numeroSequencial = numeroSequencial;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
+    public void setProdutoCarrinhoId(ProdutoCarrinhoId produtoCarrinhoId) {
+        this.produtoCarrinhoId = produtoCarrinhoId;
     }
 
     public Integer getQuantidadeProduto() {
@@ -83,19 +58,19 @@ public class ProdutoCarrinho implements Serializable {
         this.valorSubtotalProduto = valorSubtotalProduto;
     }
 
-    public BigDecimal getValorTotalProduto() {
-        return valorTotalProduto;
+    public LocalDateTime getDataUltimaAlteracao() {
+        return dataUltimaAlteracao;
     }
 
-    public void setValorTotalProduto(BigDecimal valorTotalProduto) {
-        this.valorTotalProduto = valorTotalProduto;
+    public void setDataUltimaAlteracao(LocalDateTime dataUltimaAlteracao) {
+        this.dataUltimaAlteracao = dataUltimaAlteracao;
     }
 
     public BigDecimal getValorTotalCarrinho() {
-        if (valorTotalProduto == null) {
+        if (valorSubtotalProduto == null) {
             return BigDecimal.ZERO;
         }
-        return valorTotalCarrinho.add(valorTotalProduto);
+        return valorTotalCarrinho.add(valorSubtotalProduto);
     }
 
     public void setValorTotalCarrinho(BigDecimal valorTotalCarrinho) {
@@ -106,13 +81,13 @@ public class ProdutoCarrinho implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final ProdutoCarrinho carrinho = (ProdutoCarrinho) o;
-        return Objects.equals(numeroSequencial, carrinho.numeroSequencial);
+        final ProdutoCarrinho produtoCarrinho = (ProdutoCarrinho) o;
+        return Objects.equals(produtoCarrinhoId, produtoCarrinho.produtoCarrinhoId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(numeroSequencial);
+        return Objects.hashCode(produtoCarrinhoId);
     }
 
 }

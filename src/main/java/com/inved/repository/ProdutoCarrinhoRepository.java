@@ -11,7 +11,14 @@ public interface ProdutoCarrinhoRepository extends JpaRepository<ProdutoCarrinho
     @Query("SELECT pro " +
             " FROM ProdutoCarrinho pro " +
             "WHERE 1=1 " +
-            "  AND pro.cliente.codigo = :codigoCliente ")
+            "  AND pro.produtoCarrinhoId.cliente.codigo = :codigoCliente ")
     List<ProdutoCarrinho> buscarPeloCodigoCliente(Long codigoCliente);
+
+    @Query("SELECT pro " +
+            " FROM ProdutoCarrinho pro " +
+            "WHERE 1=1 " +
+            "  AND pro.produtoCarrinhoId.produto.codigo = :codigoProduto " +
+            "  AND pro.produtoCarrinhoId.cliente.codigo = :codigoCliente ")
+    ProdutoCarrinho buscarProdutoCliente(Long codigoProduto, Long codigoCliente);
 
 }

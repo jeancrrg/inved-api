@@ -1,6 +1,8 @@
 package com.inved.service.impl;
 
+import com.inved.domain.builder.ProdutoCarrinhoBuilder;
 import com.inved.domain.cadastro.Produto;
+import com.inved.domain.embeddabledid.ProdutoCarrinhoId;
 import com.inved.domain.pedido.Cliente;
 import com.inved.domain.pedido.ProdutoCarrinho;
 import com.inved.exception.BadRequestException;
@@ -12,6 +14,8 @@ import com.inved.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,9 +50,18 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
             final Produto produtoEncontrado = produtoService.buscarPeloCodigo(codigoProduto);
             final Cliente clienteEncontrado = clienteService.buscarPeloCodigo(codigoCliente);
 
-            final ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho();
-            produtoCarrinho.setCliente(clienteEncontrado);
+            final ProdutoCarrinho produtoCarrinhoEncontrado = produtoCarrinhoRepository.buscarProdutoCliente(codigoProduto, codigoCliente);
+            if (produtoCarrinhoEncontrado != null) {
+                quantidade += produtoCarrinhoEncontrado.getQuantidadeProduto();
+            }
 
+            final ProdutoCarrinho produtoCarrinho = ProdutoCarrinhoBuilder.builder()
+                                                        .produtoCarrinhoId(new ProdutoCarrinhoId(clienteEncontrado, produtoEncontrado))
+                                                        .quantidadeProduto(quantidade)
+                                                        .valorSubtotalProduto(produtoEncontrado.getPreco().multiply(new BigDecimal(quantidade)))
+                                                        .dataUltimaAlteracao(LocalDateTime.now()).build();
+
+            produtoCarrinhoRepository.save(produtoCarrinho);
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {

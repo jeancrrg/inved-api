@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author Jean Garcia
@@ -31,6 +32,9 @@ public class Cliente implements Serializable {
 
     @Column(name = "SNHCLI")
     private String senha;
+
+    @Column(name = "DATCAD")
+    private LocalDateTime dataCadastro;
 
     public Long getCodigo() {
         return codigo;
@@ -70,6 +74,14 @@ public class Cliente implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
 }
