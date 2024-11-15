@@ -2,6 +2,7 @@ package com.inved.service.impl;
 
 import com.inved.domain.builder.ProdutoCarrinhoBuilder;
 import com.inved.domain.cadastro.Produto;
+import com.inved.domain.dto.ProdutoCarrinhoDTO;
 import com.inved.domain.embeddabledid.ProdutoCarrinhoId;
 import com.inved.domain.pedido.Cliente;
 import com.inved.domain.pedido.ProdutoCarrinho;
@@ -9,6 +10,7 @@ import com.inved.exception.BadRequestException;
 import com.inved.exception.InternalServerErrorException;
 import com.inved.repository.ProdutoCarrinhoRepository;
 import com.inved.service.ClienteService;
+import com.inved.service.ImagemProdutoService;
 import com.inved.service.ProdutoCarrinhoService;
 import com.inved.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,12 +33,24 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
     @Autowired
     private ClienteService clienteService;
 
-    public List<ProdutoCarrinho> buscar(Long codigoCliente) throws BadRequestException, InternalServerErrorException {
+    @Autowired
+    private ImagemProdutoService imagemProdutoService;
+
+    public List<ProdutoCarrinhoDTO> buscar(Long codigoCliente) throws BadRequestException, InternalServerErrorException {
         try {
+            final List<ProdutoCarrinhoDTO> listaProdutosCarrinhoDTO = new ArrayList<>();
             if (codigoCliente == null) {
                 throw new BadRequestException("Código do cliente não informado para buscar os produtos do carrinho!");
             }
-            return produtoCarrinhoRepository.buscarPeloCodigoCliente(codigoCliente);
+            final List<ProdutoCarrinho> listaProdutosCarrinho = produtoCarrinhoRepository.buscarPeloCodigoCliente(codigoCliente);
+            if (listaProdutosCarrinho != null && !listaProdutosCarrinho.isEmpty()) {
+                for (ProdutoCarrinho produtoCarrinho : listaProdutosCarrinho) {
+                    final List<String> listaUrlImagensProduto = imagemProdutoService.buscarUrlImagensProduto(produtoCarrinho.getProdutoCarrinhoId().getProduto().getCodigo());
+                    final ProdutoCarrinhoDTO produtoCarrinhoDTO = new ProdutoCarrinhoDTO().toProdutoCarrinhoDTO(produtoCarrinho, listaUrlImagensProduto);
+                    listaProdutosCarrinhoDTO.add(produtoCarrinhoDTO);
+                }
+            }
+            return listaProdutosCarrinhoDTO;
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {

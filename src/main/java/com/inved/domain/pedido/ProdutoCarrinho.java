@@ -51,6 +51,9 @@ public class ProdutoCarrinho implements Serializable {
     }
 
     public BigDecimal getValorSubtotalProduto() {
+        if (valorSubtotalProduto == null) {
+            valorSubtotalProduto = BigDecimal.ZERO;
+        }
         return valorSubtotalProduto;
     }
 
@@ -67,10 +70,11 @@ public class ProdutoCarrinho implements Serializable {
     }
 
     public BigDecimal getValorTotalCarrinho() {
-        if (valorSubtotalProduto == null) {
-            return BigDecimal.ZERO;
+        if (valorTotalCarrinho == null) {
+            valorTotalCarrinho = BigDecimal.ZERO;
         }
-        return valorTotalCarrinho.add(valorSubtotalProduto);
+        valorTotalCarrinho = valorTotalCarrinho.add(valorSubtotalProduto);
+        return valorTotalCarrinho;
     }
 
     public void setValorTotalCarrinho(BigDecimal valorTotalCarrinho) {

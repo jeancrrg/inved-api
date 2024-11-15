@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Jean Garcia
@@ -20,7 +21,7 @@ public class ProdutoDTO implements Serializable {
     private BigDecimal preco;
     private Integer quantidadeEstoque;
     private String descricaoDetalhada;
-    private List<String> listaUrlImagensProduto;
+    private List<String> listaUrlImagens;
     private Integer avaliacaoProduto;
 
     public Long getCodigo() {
@@ -63,12 +64,12 @@ public class ProdutoDTO implements Serializable {
         this.descricaoDetalhada = descricaoDetalhada;
     }
 
-    public List<String> getListaUrlImagensProduto() {
-        return listaUrlImagensProduto;
+    public List<String> getListaUrlImagens() {
+        return listaUrlImagens;
     }
 
-    public void setListaUrlImagensProduto(List<String> listaUrlImagensProduto) {
-        this.listaUrlImagensProduto = listaUrlImagensProduto;
+    public void setListaUrlImagens(List<String> listaUrlImagens) {
+        this.listaUrlImagens = listaUrlImagens;
     }
 
     public Integer getAvaliacaoProduto() {
@@ -86,8 +87,22 @@ public class ProdutoDTO implements Serializable {
         produtoDTO.setPreco(produto.getPreco());
         produtoDTO.setQuantidadeEstoque(produto.getQuantidadeEstoque());
         produtoDTO.setDescricaoDetalhada(produto.getDescricaoDetalhada());
-        produtoDTO.setListaUrlImagensProduto(listaUrlImagensProduto);
+        produtoDTO.setListaUrlImagens(listaUrlImagensProduto);
         produtoDTO.setAvaliacaoProduto(produto.getAvaliacaoProduto());
         return produtoDTO;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final ProdutoDTO produtoDTO = (ProdutoDTO) o;
+        return Objects.equals(codigo, produtoDTO.codigo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(codigo);
+    }
+
 }
