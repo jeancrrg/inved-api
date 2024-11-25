@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author Jean Garcia
@@ -30,8 +31,8 @@ public class Cliente implements Serializable {
     @Column(name = "EMLCLI")
     private String email;
 
-    @Column(name = "SNHCLI")
-    private String senha;
+    @Column(name = "TELCLI")
+    private String telefone;
 
     @Column(name = "DATCAD")
     private LocalDateTime dataCadastro;
@@ -68,12 +69,12 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public LocalDateTime getDataCadastro() {
@@ -82,6 +83,19 @@ public class Cliente implements Serializable {
 
     public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Cliente cliente = (Cliente) o;
+        return Objects.equals(codigo, cliente.codigo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(codigo);
     }
 
 }

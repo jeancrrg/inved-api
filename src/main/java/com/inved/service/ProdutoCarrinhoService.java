@@ -10,6 +10,10 @@ public interface ProdutoCarrinhoService {
 
     List<ProdutoCarrinhoDTO> buscar(Long codigoCliente) throws BadRequestException, InternalServerErrorException;
 
-    void adicionarProduto(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException, InternalServerErrorException;
+    void atualizar(Long codigoCliente, List<ProdutoCarrinhoDTO> listaProdutosCarrinhoDTO) throws BadRequestException, InternalServerErrorException;
+
+    void adicionar(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException, InternalServerErrorException;
+
+    void remover(Long codigoProduto, Long codigoCliente) throws BadRequestException, InternalServerErrorException;
 
 }

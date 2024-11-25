@@ -26,6 +26,7 @@ public class ProdutoCarrinhoDTO implements Serializable {
     private Integer quantidadeProduto;
     private BigDecimal valorSubtotalProduto;
     private BigDecimal valorTotalCarrinho;
+    private Long codigoCliente;
 
     public Long getCodigo() {
         return codigo;
@@ -107,6 +108,14 @@ public class ProdutoCarrinhoDTO implements Serializable {
         this.valorTotalCarrinho = valorTotalCarrinho;
     }
 
+    public Long getCodigoCliente() {
+        return codigoCliente;
+    }
+
+    public void setCodigoCliente(Long codigoCliente) {
+        this.codigoCliente = codigoCliente;
+    }
+
     public ProdutoCarrinhoDTO toProdutoCarrinhoDTO(ProdutoCarrinho produtoCarrinho, List<String> listaUrlImagensProduto) {
         final ProdutoCarrinhoDTO produtoCarrinhoDTO = new ProdutoCarrinhoDTO();
         produtoCarrinhoDTO.setCodigo(produtoCarrinho.getProdutoCarrinhoId().getProduto().getCodigo());
@@ -120,6 +129,7 @@ public class ProdutoCarrinhoDTO implements Serializable {
         produtoCarrinhoDTO.setQuantidadeProduto(produtoCarrinho.getQuantidadeProduto());
         produtoCarrinhoDTO.setValorSubtotalProduto(produtoCarrinho.getValorSubtotalProduto());
         produtoCarrinhoDTO.setValorTotalCarrinho(produtoCarrinho.getValorTotalCarrinho());
+        produtoCarrinhoDTO.setCodigoCliente(produtoCarrinho.getProdutoCarrinhoId().getCliente().getCodigo());
         return produtoCarrinhoDTO;
     }
 

@@ -13,6 +13,7 @@ import com.inved.service.ClienteService;
 import com.inved.service.ImagemProdutoService;
 import com.inved.service.ProdutoCarrinhoService;
 import com.inved.service.ProdutoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,14 +55,37 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar os produtos do carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar os produtos no carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
         }
     }
 
-    public void adicionarProduto(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException,
-                                                                                                    InternalServerErrorException {
+    public void atualizar(Long codigoCliente, List<ProdutoCarrinhoDTO> listaProdutosCarrinhoDTO) throws BadRequestException, InternalServerErrorException {
         try {
-            validarAntesAdicionarProduto(codigoProduto, quantidade, codigoCliente);
+            if (listaProdutosCarrinhoDTO != null && !listaProdutosCarrinhoDTO.isEmpty()) {
+                final Cliente clienteEncontrado = clienteService.buscarPeloCodigo(codigoCliente);
+
+                for (ProdutoCarrinhoDTO produtoCarrinhoDTO : listaProdutosCarrinhoDTO) {
+                    final Produto produtoEncontrado = produtoService.buscarPeloCodigo(produtoCarrinhoDTO.getCodigo());
+
+                    final ProdutoCarrinho produtoCarrinho = ProdutoCarrinhoBuilder.builder()
+                            .produtoCarrinhoId(new ProdutoCarrinhoId(clienteEncontrado, produtoEncontrado))
+                            .quantidadeProduto(produtoCarrinhoDTO.getQuantidadeProduto())
+                            .valorSubtotalProduto(produtoEncontrado.getPreco().multiply(new BigDecimal(produtoCarrinhoDTO.getQuantidadeProduto())))
+                            .dataUltimaAlteracao(LocalDateTime.now()).build();
+
+                    produtoCarrinhoRepository.save(produtoCarrinho);
+                }
+            }
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao atualizar o carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+        }
+    }
+
+    public void adicionar(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException, InternalServerErrorException {
+        try {
+            validarAntesAdicionarProdutoCarrinho(codigoProduto, quantidade, codigoCliente);
             final Produto produtoEncontrado = produtoService.buscarPeloCodigo(codigoProduto);
             final Cliente clienteEncontrado = clienteService.buscarPeloCodigo(codigoCliente);
 
@@ -84,7 +108,7 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         }
     }
 
-    public void validarAntesAdicionarProduto(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException {
+    public void validarAntesAdicionarProdutoCarrinho(Long codigoProduto, Integer quantidade, Long codigoCliente) throws BadRequestException {
         if (codigoProduto == null) {
             throw new BadRequestException("Código do produto não informado para adicionar o produto ao carrinho!");
         }
@@ -96,4 +120,24 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         }
     }
 
+    @Transactional
+    public void remover(Long codigoProduto, Long codigoCliente) throws BadRequestException, InternalServerErrorException {
+        try {
+            validarAntesRemoverProdutoCarrinho(codigoProduto, codigoCliente);
+            produtoCarrinhoRepository.excluirProdutoCarrinho(codigoProduto, codigoCliente);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao remover o produto do carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+        }
+    }
+
+    public void validarAntesRemoverProdutoCarrinho(Long codigoProduto, Long codigoCliente) throws BadRequestException {
+        if (codigoProduto == null) {
+            throw new BadRequestException("Código do produto não informado para remover o produto do carrinho!");
+        }
+        if (codigoCliente == null) {
+            throw new BadRequestException("Código do cliente não informado para remover o produto do carrinho!");
+        }
+    }
 }

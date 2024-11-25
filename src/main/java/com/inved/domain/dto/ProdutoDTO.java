@@ -23,6 +23,7 @@ public class ProdutoDTO implements Serializable {
     private String descricaoDetalhada;
     private List<String> listaUrlImagens;
     private Integer avaliacaoProduto;
+    private String nomeCategoria;
 
     public Long getCodigo() {
         return codigo;
@@ -80,6 +81,14 @@ public class ProdutoDTO implements Serializable {
         this.avaliacaoProduto = avaliacaoProduto;
     }
 
+    public String getNomeCategoria() {
+        return nomeCategoria;
+    }
+
+    public void setNomeCategoria(String nomeCategoria) {
+        this.nomeCategoria = nomeCategoria;
+    }
+
     public ProdutoDTO toProdutoDTO(Produto produto, List<String> listaUrlImagensProduto) {
         final ProdutoDTO produtoDTO = new ProdutoDTO();
         produtoDTO.setCodigo(produto.getCodigo());
@@ -89,6 +98,7 @@ public class ProdutoDTO implements Serializable {
         produtoDTO.setDescricaoDetalhada(produto.getDescricaoDetalhada());
         produtoDTO.setListaUrlImagens(listaUrlImagensProduto);
         produtoDTO.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+        produtoDTO.setNomeCategoria(produto.getCategoria() != null ? produto.getCategoria().getNome() : null);
         return produtoDTO;
     }
 
