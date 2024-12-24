@@ -25,13 +25,13 @@ public class PedidoController {
     @PutMapping()
     public ResponseEntity<?> atualizar(@RequestParam Long codigoCliente, @RequestBody List<ProdutoCarrinhoDTO> listaProdutosCarrinhoDTO) {
         try {
-            produtoCarrinhoService.atualizar(codigoCliente, listaProdutosCarrinhoDTO);
+            //produtoCarrinhoService.atualizar(codigoCliente, listaProdutosCarrinhoDTO);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (BadRequestException e) {
-            loggerUtil.error("Falha ao validar antes de atualizar o carrinho do cliente!", "atualizar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Falha ao validar antes de atualizar o carrinho do cliente!", e, this);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de atualizar o carrinho! Contacte o suporte.");
         } catch (Exception e) {
-            loggerUtil.error("Ocorreu um erro inesperado ao atualizar o carrinho do cliente!", "atualizar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Ocorreu um erro inesperado ao atualizar o carrinho do cliente!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao atualizar o carrinho! Contacte o suporte.");
         }
     }

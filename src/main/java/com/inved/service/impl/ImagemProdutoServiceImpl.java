@@ -33,8 +33,7 @@ public class ImagemProdutoServiceImpl implements ImagemProdutoService {
 
     private final String DIRETORIO_IMAGEM = "imagens/produtos";
 
-    public List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException, ArquivoAmazonException,
-                                                                                            InternalServerErrorException {
+    public List<ImagemProduto> buscar(Long codigo, String nome, Long codigoProduto) throws ConverterException, ArquivoAmazonException, InternalServerErrorException {
         try {
             if (nome != null && !nome.isEmpty()) {
                 final String nomeFormatado = formatterUtil.removerAcentos(nome);
@@ -46,11 +45,11 @@ public class ImagemProdutoServiceImpl implements ImagemProdutoService {
             }
             return listaImagensProdutos;
         } catch (ConverterException e) {
-            throw new ConverterException("Erro ao converter o arquivo para buscar as imagens do produto! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new ConverterException("Erro ao converter o arquivo para buscar as imagens do produto! - " + e.getMessage());
         } catch (ArquivoAmazonException e) {
-            throw new ArquivoAmazonException("Erro ao buscar as imagens do produto no repositório da amazon! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new ArquivoAmazonException("Erro ao buscar as imagens do produto no repositório da amazon! - " + e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar as imagens do produto! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar as imagens do produto! - " + e.getMessage());
         }
     }
 

@@ -27,8 +27,7 @@ public class ClienteServiceImpl implements ClienteService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o cliente pelo código: "+ codigoCliente
-                                                    + "! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar o cliente pelo código: "+ codigoCliente + "! - " + e.getMessage());
         }
     }
 

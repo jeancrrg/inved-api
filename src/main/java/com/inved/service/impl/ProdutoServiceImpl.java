@@ -43,7 +43,7 @@ public class ProdutoServiceImpl implements ProdutoService {
             }
             return listaProdutosDTO;
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar os produtos! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar os produtos! - " + e.getMessage());
         }
     }
 
@@ -60,8 +60,20 @@ public class ProdutoServiceImpl implements ProdutoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o produto pelo código: " + codigoProduto
-                                                    + "! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar o produto pelo código: " + codigoProduto + "! - " + e.getMessage());
+        }
+    }
+
+    public Integer buscarQuantidadeEstoque(Long codigoProduto) throws BadRequestException, InternalServerErrorException {
+        try {
+            if (codigoProduto == null) {
+                throw new BadRequestException("Código do produto não informado para buscar a quantidade de estoque!");
+            }
+            return produtoRepository.buscarQuantidadeEstoque(codigoProduto);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar a quantidade de estoque do produto: " + codigoProduto + "! - " + e.getMessage());
         }
     }
 

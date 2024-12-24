@@ -1,5 +1,6 @@
 package com.inved.controller;
 
+import com.inved.exception.BadRequestException;
 import com.inved.service.ProdutoService;
 import com.inved.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,25 @@ public class ProdutoController {
 
     @GetMapping()
     public ResponseEntity<?> buscarAtivo(@RequestParam(required = false) Long codigo,
-                                         @RequestParam (required = false) String nome) {
+                                         @RequestParam(required = false) String nome) {
         try {
             return ResponseEntity.ok(produtoService.buscarAtivo(codigo, nome));
         } catch (Exception e) {
-            loggerUtil.error("Erro ao buscar os produtos!", "buscar", e, ProdutoController.class);
+            loggerUtil.error("Erro ao buscar os produtos!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar os produtos! Contacte o suporte.");
+        }
+    }
+
+    @GetMapping("/estoque")
+    public ResponseEntity<?> buscarQuantidadeEstoque(@RequestParam(required = false) Long codigoProduto) {
+        try {
+            return ResponseEntity.ok(produtoService.buscarQuantidadeEstoque(codigoProduto));
+        } catch (BadRequestException e) {
+            loggerUtil.error("Falha ao validar antes ao buscar os produtos!", e, this);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Falha ao validar antes ao buscar os produtos! Entre em contato com o suporte.");
+        } catch (Exception e) {
+            loggerUtil.error("Erro ao buscar os produtos!", e, this);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar os produtos! Entre em contato com o suporte.");
         }
     }
 

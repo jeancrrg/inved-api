@@ -48,8 +48,7 @@ public class ArquivoAmazonServiceImpl implements ArquivoAmazonService {
         } catch (BadRequestException e) {
             throw new ArquivoAmazonException(e.getMessage());
         } catch (Exception e) {
-            throw new ArquivoAmazonException("Erro ao buscar arquivo no diretório: " + caminhoDiretorio
-                                                + " da amazon! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new ArquivoAmazonException("Erro ao buscar arquivo no diretório: " + caminhoDiretorio + " da amazon! - " + e.getMessage());
         }
     }
 

@@ -25,13 +25,26 @@ public class ProdutoCarrinhoController {
     @GetMapping()
     public ResponseEntity<?> buscar(@RequestParam Long codigoCliente) {
         try {
-            return ResponseEntity.ok(produtoCarrinhoService.buscar(codigoCliente));
+            return ResponseEntity.status(HttpStatus.OK).body(produtoCarrinhoService.buscar(codigoCliente));
         } catch (BadRequestException e) {
-            loggerUtil.error("Falha ao validar antes de buscar os produtos no carrinho do cliente: " + codigoCliente + "!", "buscar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Falha ao validar antes de buscar os produtos no carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de buscar os produto no carrinho! Contacte o suporte.");
         } catch (Exception e) {
-            loggerUtil.error("Ocorreu um erro inesperado ao buscar os produtos no carrinho do cliente: " + codigoCliente + "!", "buscar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Ocorreu um erro inesperado ao buscar os produtos no carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao buscar os produtos no carrinho! Contacte o suporte.");
+        }
+    }
+
+    @GetMapping("/codigos")
+    public ResponseEntity<?> buscarCodigoProdutos(@RequestParam Long codigoCliente) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(produtoCarrinhoService.buscarCodigoProdutos(codigoCliente));
+        } catch (BadRequestException e) {
+            loggerUtil.error("Falha ao validar antes de buscar o código de produtos no carrinho do cliente: " + codigoCliente + "!", e, this);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de buscar o código de produtos no carrinho! Contacte o suporte.");
+        } catch (Exception e) {
+            loggerUtil.error("Ocorreu um erro inesperado ao buscar o código de produtos no carrinho do cliente: " + codigoCliente + "!", e, this);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao buscar o código de produtos no carrinho! Contacte o suporte.");
         }
     }
 
@@ -41,10 +54,10 @@ public class ProdutoCarrinhoController {
             produtoCarrinhoService.atualizar(codigoCliente, listaProdutosCarrinhoDTO);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (BadRequestException e) {
-            loggerUtil.error("Falha ao validar antes de atualizar o carrinho do cliente!", "atualizar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Falha ao validar antes de atualizar o carrinho do cliente!", e, this);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de atualizar o carrinho! Contacte o suporte.");
         } catch (Exception e) {
-            loggerUtil.error("Ocorreu um erro inesperado ao atualizar o carrinho do cliente!", "atualizar", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Ocorreu um erro inesperado ao atualizar o carrinho do cliente!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao atualizar o carrinho! Contacte o suporte.");
         }
     }
@@ -55,12 +68,10 @@ public class ProdutoCarrinhoController {
             produtoCarrinhoService.adicionar(codigoProduto, quantidade, codigoCliente);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (BadRequestException e) {
-            loggerUtil.error("Falha ao validar antes de adicionar o produto: " + codigoProduto + " no carrinho do cliente: "
-                    + codigoCliente + "!", "adicionarProduto", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Falha ao validar antes de adicionar o produto: " + codigoProduto + " no carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de adicionar o produto ao carrinho! Contacte o suporte.");
         } catch (Exception e) {
-            loggerUtil.error("Ocorreu um erro inesperado ao adicionar o produto: " + codigoProduto + " no carrinho do cliente: " + codigoCliente + "!",
-                                                                                            "adicionarProduto", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Ocorreu um erro inesperado ao adicionar o produto: " + codigoProduto + " no carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao adicionar o produto no carrinho! Contacte o suporte.");
         }
     }
@@ -71,12 +82,10 @@ public class ProdutoCarrinhoController {
             produtoCarrinhoService.remover(codigoProduto, codigoCliente);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (BadRequestException e) {
-            loggerUtil.error("Falha ao validar antes de remover o produto: " + codigoProduto + " do carrinho do cliente: " + codigoCliente + "!",
-                                                                                            "removerProduto", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Falha ao validar antes de remover o produto: " + codigoProduto + " do carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocorreu uma falha ao validar antes de remover o produto ao carrinho! Contacte o suporte.");
         } catch (Exception e) {
-            loggerUtil.error("Ocorreu um erro inesperado ao remover o produto: " + codigoProduto + " do carrinho do cliente: " + codigoCliente + "!",
-                                                                                            "removerProduto", e, ProdutoCarrinhoController.class);
+            loggerUtil.error("Ocorreu um erro inesperado ao remover o produto: " + codigoProduto + " do carrinho do cliente: " + codigoCliente + "!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro inesperado ao remover o produto do carrinho! Contacte o suporte.");
         }
     }

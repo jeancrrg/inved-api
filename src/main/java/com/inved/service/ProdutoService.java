@@ -13,4 +13,6 @@ public interface ProdutoService {
 
      Produto buscarPeloCodigo(Long codigoProduto) throws BadRequestException, InternalServerErrorException;
 
+     Integer buscarQuantidadeEstoque(Long codigoProduto) throws BadRequestException, InternalServerErrorException;
+
 }

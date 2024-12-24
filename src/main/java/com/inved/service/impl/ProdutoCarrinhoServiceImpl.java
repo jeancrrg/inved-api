@@ -14,28 +14,31 @@ import com.inved.service.ImagemProdutoService;
 import com.inved.service.ProdutoCarrinhoService;
 import com.inved.service.ProdutoService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
 
-    @Autowired
-    private ProdutoCarrinhoRepository produtoCarrinhoRepository;
+    private final ProdutoCarrinhoRepository produtoCarrinhoRepository;
+    private final ProdutoService produtoService;
+    private final ClienteService clienteService;
+    private final ImagemProdutoService imagemProdutoService;
 
-    @Autowired
-    private ProdutoService produtoService;
-
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
-    private ImagemProdutoService imagemProdutoService;
+    public ProdutoCarrinhoServiceImpl(ProdutoCarrinhoRepository produtoCarrinhoRepository,
+                                      ProdutoService produtoService,
+                                      ClienteService clienteService,
+                                      ImagemProdutoService imagemProdutoService) {
+        this.produtoCarrinhoRepository = produtoCarrinhoRepository;
+        this.produtoService = produtoService;
+        this.clienteService = clienteService;
+        this.imagemProdutoService = imagemProdutoService;
+    }
 
     public List<ProdutoCarrinhoDTO> buscar(Long codigoCliente) throws BadRequestException, InternalServerErrorException {
         try {
@@ -55,7 +58,25 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar os produtos no carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar os produtos no carrinho! - " + e.getMessage());
+        }
+    }
+
+    public List<Long> buscarCodigoProdutos(Long codigoCliente) throws BadRequestException, InternalServerErrorException {
+        try {
+            if (codigoCliente == null) {
+                throw new BadRequestException("Código do cliente não informado para buscar o código de produtos do carrinho!");
+            }
+            final List<ProdutoCarrinho> listaProdutosCarrinhoDTO = produtoCarrinhoRepository.buscarPeloCodigoCliente(codigoCliente);
+            List<Long> listaCodigoProdutos = new ArrayList<>();
+            if (listaProdutosCarrinhoDTO != null && !listaProdutosCarrinhoDTO.isEmpty()) {
+                listaCodigoProdutos = listaProdutosCarrinhoDTO.stream().map(produtoCarrinho -> produtoCarrinho.getProdutoCarrinhoId().getProduto().getCodigo()).collect(Collectors.toList());
+            }
+            return listaCodigoProdutos;
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar o código de produtos no carrinho! - " + e.getMessage());
         }
     }
 
@@ -79,7 +100,7 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao atualizar o carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao atualizar o carrinho! - " + e.getMessage());
         }
     }
 
@@ -104,7 +125,7 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao adicionar o produto no carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao adicionar o produto no carrinho! - " + e.getMessage());
         }
     }
 
@@ -128,7 +149,7 @@ public class ProdutoCarrinhoServiceImpl implements ProdutoCarrinhoService {
         } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao remover o produto do carrinho! - MENSAGEM DO ERRO: " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao remover o produto do carrinho! - " + e.getMessage());
         }
     }
 

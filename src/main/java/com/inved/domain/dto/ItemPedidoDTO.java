@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public class ItemPedidoDTO implements Serializable {
 
-    private 
+
 
 }

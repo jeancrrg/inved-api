@@ -7,7 +7,7 @@
     <property name="localeCountry" value="BR"/>
     <property name="localeLanguage" value="pt"/>
 
-    <!-- Valida se possui código acima de limite de caracteres (150)-->
+    <!-- Valida se possui código acima do limite de caracteres (150)-->
     <module name="LineLength">
         <property name="max" value="200"/>
     </module>

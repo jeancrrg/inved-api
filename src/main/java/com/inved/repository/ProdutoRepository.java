@@ -18,4 +18,10 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     Produto findByCodigo(Long codigoProduto);
 
+    @Query("SELECT pro.quantidadeEstoque " +
+            " FROM Produto pro " +
+            "WHERE 1=1 " +
+            "  AND pro.codigo = :codigoProduto ")
+    Integer buscarQuantidadeEstoque(Long codigoProduto);
+
 }
