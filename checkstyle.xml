@@ -9,7 +9,7 @@
 
     <!-- Valida se possui código acima do limite de caracteres (150)-->
     <module name="LineLength">
-        <property name="max" value="200"/>
+        <property name="max" value="200"/>c
     </module>
 
     <module name="TreeWalker">
